@@ -6,8 +6,8 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Person(
     var username: String?= "",
-    var followers: Int?= 0,
-    var following: Int?= 0,
+    var followers: String?= "",
+    var following: String?= "",
     var avatar:String?= "",
     var repository: String?= "",
     var location:String?=""

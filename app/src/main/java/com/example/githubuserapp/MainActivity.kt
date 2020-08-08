@@ -10,6 +10,7 @@ import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler
 import cz.msebera.android.httpclient.Header
 import kotlinx.android.synthetic.main.activity_main.*
+import org.json.JSONArray
 import org.json.JSONObject
 import java.lang.Exception
 
@@ -37,16 +38,16 @@ class MainActivity : AppCompatActivity() {
                 // Parsing JSON
                 val listUser = ArrayList<Person>()
                 val result = String(responseBody)
-                Log.d(TAG, result)
+                Log.d(TAG, "result: $result")
                 try {
-                    val responseObject = JSONObject(result)
-                    val items = responseObject.getJSONArray("items")
+                    //val responseObject = JSONObject(result)
+                    val items = JSONArray(result)
                     for (i in 0 until items.length()){
                         val item = items.getJSONObject(i)
                         val username = item.getString("login")
                         val avatar = item.getString("avatar_url")
-                        val followers = item.getInt("followers_url")
-                        val following = item.getInt("following_url")
+                        val followers = item.getString("followers_url")
+                        val following = item.getString("following_url")
                         val user = Person(username,followers, following, avatar)
                         listUser.add(user)
                     }
@@ -54,7 +55,7 @@ class MainActivity : AppCompatActivity() {
                     //listData.addAll(listUser)
                     adapter.setData(listUser)
                 } catch (e:Exception){
-                    Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_LONG).show()
                     e.printStackTrace()
                 }
             }
