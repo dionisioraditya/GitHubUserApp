@@ -11,8 +11,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
 
-class ListUserAdapter (private val listUser: ArrayList<Person>): RecyclerView.Adapter<ListUserAdapter.ListViewHolder>(){
+class ListUserAdapter : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>(){
     private  var onItemClickCallback: OnItemClickCallback? = null
+    private val mData = ArrayList<Person>()
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback){
         this.onItemClickCallback = onItemClickCallback
     }
@@ -22,11 +23,11 @@ class ListUserAdapter (private val listUser: ArrayList<Person>): RecyclerView.Ad
         return ListViewHolder(view)
     }
     override fun getItemCount(): Int {
-        return listUser.size
+        return mData.size
     }
     override fun onBindViewHolder(holder:ListViewHolder, position: Int) {
         //holder.bind(listUser[position])
-        val user = listUser[position]
+        val user = mData[position]
         Glide.with(holder.itemView.context)
             .load(user.avatar)
             .apply(RequestOptions().override(55,55))
@@ -35,7 +36,7 @@ class ListUserAdapter (private val listUser: ArrayList<Person>): RecyclerView.Ad
 
         // list on click
         holder.itemView.setOnClickListener {
-            onItemClickCallback?.onItemClicked(listUser[holder.adapterPosition])
+            onItemClickCallback?.onItemClicked(mData[holder.adapterPosition])
             val intent = Intent(holder.itemView.context,DetailUser::class.java)
             intent.putExtra(DetailUser.EXTRA_PERSON,user)
             holder.itemView.context.startActivity(intent)
@@ -47,6 +48,11 @@ class ListUserAdapter (private val listUser: ArrayList<Person>): RecyclerView.Ad
     }
     interface OnItemClickCallback{
         fun onItemClicked(data: Person)
+    }
+    fun setData(items: ArrayList<Person>){
+        mData.clear()
+        mData.addAll(items)
+        notifyDataSetChanged()
     }
 }
 

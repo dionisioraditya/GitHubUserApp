@@ -14,7 +14,7 @@ import org.json.JSONObject
 import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
-    private var listData: ArrayList<Person> = ArrayList()
+    //private var listData: ArrayList<Person> = ArrayList()
     private lateinit var adapter: ListUserAdapter
     companion object {
         private val TAG = MainActivity::class.java.simpleName
@@ -51,8 +51,8 @@ class MainActivity : AppCompatActivity() {
                         listUser.add(user)
                     }
                     // add data to recyclerView
-                    listData.addAll(listUser)
-                    adapter.notifyDataSetChanged()
+                    //listData.addAll(listUser)
+                    adapter.setData(listUser)
                 } catch (e:Exception){
                     Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
                     e.printStackTrace()
@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
     }
     private fun showRecyclerList(){
         rv_list.layoutManager = LinearLayoutManager(this)
-        val listUserAdapter = ListUserAdapter(listData)
+        val listUserAdapter = ListUserAdapter()
         rv_list.adapter = listUserAdapter
         //listUserAdapter.notifyDataSetChanged()
         listUserAdapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback{
