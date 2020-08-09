@@ -6,4 +6,6 @@
     <string name="username_detail">username detail</string>
     <string name="user_detail">user detail</string>
     <string name="description_user">Description User:</string>
+    <string name="search">Search</string>
+    <string name="search_hint">Search User</string>
 </resources>

@@ -1,9 +1,13 @@
 package com.example.githubuserapp
 
+import android.app.SearchManager
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.view.View
+import androidx.appcompat.widget.SearchView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.loopj.android.http.AsyncHttpClient
@@ -15,7 +19,6 @@ import org.json.JSONObject
 import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
-    //private var listData: ArrayList<Person> = ArrayList()
     private lateinit var adapter: ListUserAdapter
     companion object {
         private val TAG = MainActivity::class.java.simpleName
@@ -40,8 +43,8 @@ class MainActivity : AppCompatActivity() {
                 val result = String(responseBody)
                 Log.d(TAG, "result: $result")
                 try {
-                    //val responseObject = JSONObject(result)
                     val items = JSONArray(result)
+                    Log.d(TAG,"items: $items")
                     for (i in 0 until items.length()){
                         val item = items.getJSONObject(i)
                         val username = item.getString("login")
@@ -51,8 +54,6 @@ class MainActivity : AppCompatActivity() {
                         val user = Person(username,followers, following, avatar)
                         listUser.add(user)
                     }
-                    // add data to recyclerView
-                    //listData.addAll(listUser)
                     adapter.setData(listUser)
                 } catch (e:Exception){
                     Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_LONG).show()
@@ -71,12 +72,61 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
+    private fun getDataSearch(id: String){
+        progressBar.visibility = View.VISIBLE
+        val client = AsyncHttpClient()
+        client.addHeader("Authorization", "token d685ca4e8ebb09f9f58b35898326ad4cab3d8991")
+        client.addHeader("User-Agent", "request")
+        val url = "https://api.github.com/search/users?q=$id"
+        client.get(url, object :AsyncHttpResponseHandler(){
+            override fun onSuccess(statusCode: Int, headers: Array<out Header>, responseBody: ByteArray
+            ) {
+                progressBar.visibility = View.INVISIBLE
+                val listUser = ArrayList<Person>()
+                val result = String(responseBody)
+                Log.d(TAG,"result: $result")
+                try {
+                    val responseObject = JSONObject(result)
+                    val items = responseObject.getJSONArray("items")
+                    Log.d(TAG,"items: $items")
+                    for (i in 0 until items.length()) {
+                        val item = items.getJSONObject(i)
+                        val username = item.getString("login")
+                        val avatar = item.getString("avatar_url")
+                        val followers = item.getString("followers_url")
+                        val following = item.getString("following_url")
+                        val user = Person(username, avatar, following, followers)
+                        listUser.add(user)
+                    }
+                    adapter.setData(listUser)
+                }catch (e:Exception){
+                    Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_LONG).show()
+                    e.printStackTrace()
+                }
+            }
+
+            override fun onFailure(
+                statusCode: Int,
+                headers: Array<out Header>?,
+                responseBody: ByteArray?,
+                error: Throwable?
+            ) {
+                progressBar.visibility = View.INVISIBLE
+                val errorMessage = when (statusCode){
+                    401 -> "$statusCode : Bad Request"
+                    403 -> "$statusCode : Forbidden"
+                    404 -> "$statusCode : Not Found"
+                    else -> "$statusCode : ${error?.message}"
+                }
+                Toast.makeText(this@MainActivity,errorMessage,Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
     private fun showRecyclerList(){
         rv_list.layoutManager = LinearLayoutManager(this)
-        val listUserAdapter = ListUserAdapter()
-        rv_list.adapter = listUserAdapter
-        //listUserAdapter.notifyDataSetChanged()
-        listUserAdapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback{
+        adapter = ListUserAdapter()
+        rv_list.adapter = adapter
+        adapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback{
             override fun onItemClicked(data: Person) {
                 messageItemClicked(data)
             }
@@ -85,5 +135,36 @@ class MainActivity : AppCompatActivity() {
     private fun messageItemClicked(user:Person){
         Toast.makeText(this, "you Choose" + user.username, Toast.LENGTH_SHORT).show()
     }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+
+        val inflater = menuInflater
+        inflater.inflate(R.menu.option_menu,menu)
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchView = menu.findItem(R.id.search).actionView as SearchView
+
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        searchView.queryHint = resources.getString(R.string.search_hint)
+        searchView.setOnQueryTextListener(object :SearchView.OnQueryTextListener{
+
+            override fun onQueryTextSubmit(query: String): Boolean {
+                Toast.makeText(this@MainActivity, query, Toast.LENGTH_SHORT).show()
+                if (query.isEmpty()){
+                    return true
+                } else{
+                    progressBar.visibility = View.INVISIBLE
+                    getDataSearch(query)
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                return false
+            }
+        })
+        //return super.onCreateOptionsMenu(menu)
+        return true
+    }
+
 
 }
