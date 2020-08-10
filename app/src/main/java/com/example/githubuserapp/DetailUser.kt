@@ -24,7 +24,7 @@ class DetailUser : AppCompatActivity() {
         // init variable intent parcelable
         val person = intent.getParcelableExtra(EXTRA_PERSON) as Person
         val txtUsername = person.username
-        val textDesc = "Followers: ${person.followers} \nFollowing: ${person.following}"
+        val textDesc = "Name: ${person.name} \nLocation: ${person.location} \nCompany: ${person.company} \nRepository: ${person.repository}\nFollowers: ${person.followers} \nFollowing: ${person.following}"
 
         // Output Textview & ImageView
         Glide.with(this)

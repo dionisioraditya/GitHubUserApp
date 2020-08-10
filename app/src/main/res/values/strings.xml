@@ -8,4 +8,7 @@
     <string name="description_user">Description User:</string>
     <string name="search">Search</string>
     <string name="search_hint">Search User</string>
+    <string name="name">Name</string>
+    <string name="followers">followers</string>
+    <string name="following">following</string>
 </resources>
