@@ -222,6 +222,7 @@ class MainActivity : AppCompatActivity() {
             dataUsers.company
         )
         val intentToDetail = Intent(this@MainActivity, DetailUser::class.java)
+        Log.d(TAG, "dataUser Intent $dataUser")
         intentToDetail.putExtra(DetailUser.EXTRA_PERSON, dataUser)
         startActivity(intentToDetail)
     }
