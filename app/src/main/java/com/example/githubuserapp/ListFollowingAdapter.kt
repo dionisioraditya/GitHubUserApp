@@ -11,22 +11,15 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
 class ListFollowingAdapter: RecyclerView.Adapter<ListFollowingAdapter.ListViewHolder>() {
-
     private val mData = ArrayList<DataFollowing>()
-    companion object{
-        private val TAG = ListFollowingAdapter::class.java.simpleName
-    }
-
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ListViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.item_user,viewGroup,false)
         return ListViewHolder(view)
     }
-
     override fun getItemCount(): Int {
         return mData.size
     }
-
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         val followingData = mData[position]
@@ -36,8 +29,10 @@ class ListFollowingAdapter: RecyclerView.Adapter<ListFollowingAdapter.ListViewHo
             .into(holder.imgPhoto)
         holder.tvUsername.text = followingData.username
         holder.tvName.text = followingData.name
-        holder.tvFollowers.text = "Followers: ${followingData.followers}"
-        holder.tvFollowing.text = "Following: ${followingData.following}"
+        val lFollowers = holder.itemView.context.resources.getString(R.string.followers)
+        val lFollowing = holder.itemView.context.resources.getString(R.string.following)
+        holder.tvFollowers.text = "$lFollowers: ${followingData.followers}"
+        holder.tvFollowing.text = "$lFollowing: ${followingData.following}"
     }
     inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imgPhoto: ImageView = itemView.findViewById(R.id.img_photo)

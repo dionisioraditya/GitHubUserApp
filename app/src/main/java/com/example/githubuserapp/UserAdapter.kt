@@ -2,7 +2,6 @@ package com.example.githubuserapp
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.nfc.Tag
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +16,7 @@ import com.bumptech.glide.request.RequestOptions
 class ListUserAdapter : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>(){
     private  var onItemClickCallback: OnItemClickCallback? = null
     private val mData = ArrayList<Person>()
+
     companion object{
         private val TAG = ListUserAdapter::class.java.simpleName
     }
@@ -33,7 +33,6 @@ class ListUserAdapter : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>(){
     }
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder:ListViewHolder, position: Int) {
-        //holder.bind(listUser[position])
         val user = mData[position]
         Log.d(TAG, "test ${user.avatar}")
         Glide.with(holder.itemView.context)
@@ -42,8 +41,10 @@ class ListUserAdapter : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>(){
             .into(holder.imgPhoto)
         holder.tvtUsername.text = user.username
         holder.tvName.text = user.name
-        holder.tvFollowers.text = "Followers: ${user.followers}"
-        holder.tvFollowing.text = "Following: ${user.following}"
+        val lFollowers = holder.itemView.context.resources.getString(R.string.followers)
+        val lFollowing = holder.itemView.context.resources.getString(R.string.following)
+        holder.tvFollowers.text = "$lFollowers: ${user.followers}"
+        holder.tvFollowing.text = "$lFollowing: ${user.following}"
 
         // list on click
         holder.itemView.setOnClickListener {

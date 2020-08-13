@@ -5,8 +5,10 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import android.widget.Toast
@@ -124,7 +126,6 @@ class MainActivity : AppCompatActivity() {
             override fun onSuccess(statusCode: Int, headers: Array<out Header>, responseBody: ByteArray
             ) {
                 progressBar.visibility = View.INVISIBLE
-                //val listUser = ArrayList<Person>()
                 val result = String(responseBody)
                 Log.d(TAG,"result-detail: $result")
                 try {
@@ -137,7 +138,7 @@ class MainActivity : AppCompatActivity() {
                     val following = responseObject.getInt("following")
                     val repository = responseObject.getInt("public_repos")
                     val location = responseObject.getString("location")
-                    val company = responseObject.getString("location")
+                    val company = responseObject.getString("company")
                     val user = Person(username, avatar, name, followers, following, repository, location, company)
                     listData.add(user)
                     adapter.setData(listData)
@@ -209,6 +210,14 @@ class MainActivity : AppCompatActivity() {
             }
         })
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == R.id.action_change_settings){
+            val mIntent = Intent(Settings.ACTION_LOCALE_SETTINGS)
+            startActivity(mIntent)
+        }
+        return super.onOptionsItemSelected(item)
     }
     private fun showSelectedData(dataUsers : Person){
         val dataUser = Person(

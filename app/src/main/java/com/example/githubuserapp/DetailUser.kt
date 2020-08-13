@@ -34,7 +34,13 @@ class DetailUser : AppCompatActivity() {
         val person = intent.getParcelableExtra(EXTRA_PERSON) as Person?
         Log.d(TAG, "check person detail: $person")
         val txtUsername = person?.username
-        val textDesc = "Name: ${person?.name} \nLocation: ${person?.location} \nCompany: ${person?.company} \nRepository: ${person?.repository}\nFollowers: ${person?.followers} \nFollowing: ${person?.following}"
+        val lFollowers = resources.getString(R.string.followers)
+        val lFollowing = resources.getString(R.string.following)
+        val lCompany = resources.getString(R.string.company)
+        val lRepository = resources.getString(R.string.repository)
+        val lLocation = resources.getString(R.string.location)
+        val lName = resources.getString(R.string.name)
+        val textDesc = "$lName: ${person?.name} \n$lLocation: ${person?.location} \n$lCompany: ${person?.company} \n$lRepository: ${person?.repository}\n$lFollowers: ${person?.followers} \n$lFollowing: ${person?.following}"
 
         // Output Textview & ImageView
         Glide.with(this)
@@ -47,7 +53,6 @@ class DetailUser : AppCompatActivity() {
         setViewPagerAdapter(mUsername)
         val title = "$txtUsername"
         setActionBarTitle(title)
-        // Send data to pager adapter
     }
     private fun setActionBarTitle(str: String){
         if (supportActionBar!= null){

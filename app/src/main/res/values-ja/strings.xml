@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Github User App</string>
+    <string name="username">フォロワー</string>
+    <string name="name_list">名前</string>
+    <string name="location_list">location_list</string>
+    <string name="username_detail">ユーザー名の詳細</string>
+    <string name="user_detail">ユーザーの詳細</string>
+    <string name="description_user">説明ユーザー:</string>
+    <string name="search">探す</string>
+    <string name="search_hint">ユーザーを検索</string>
+    <string name="name">名前</string>
+    <string name="followers">フォロワー</string>
+    <string name="following">以下</string>
+    <string name="nav_followers">フォロワー</string>
+    <string name="nav_following">以下</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tab_followers">フォロワー</string>
+    <string name="tab_following">以下</string>
+    <string name="change_language_settings">言語設定を変更する</string>
+
+    <string name="location">ロケーション</string>
+    <string name="company">会社</string>
+    <string name="repository">リポジトリ</string>
+</resources>

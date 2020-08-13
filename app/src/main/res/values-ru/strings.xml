@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Github User App</string>
+    <string name="username">username</string>
+    <string name="name_list">name</string>
+    <string name="location_list">location_list</string>
+    <string name="username_detail">username detail</string>
+    <string name="user_detail">user detail</string>
+    <string name="description_user">описание пользователя:</string>
+    <string name="search">Search</string>
+    <string name="search_hint">поиск пользователя</string>
+    <string name="name">название</string>
+    <string name="followers">последователи</string>
+    <string name="following">следующий</string>
+    <string name="nav_followers">последователи:</string>
+    <string name="nav_following">следующий:</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tab_followers">последователи</string>
+    <string name="tab_following">следующий</string>
+    <string name="change_language_settings" >Изменить языковые настройки</string>
+
+    <string name="location" >расположение</string>
+    <string name="company" >Компания</string>
+    <string name="repository" >вместилище</string>
+</resources>

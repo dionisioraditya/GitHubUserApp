@@ -1,48 +1,25 @@
 package com.example.githubuserapp
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler
 import cz.msebera.android.httpclient.Header
-import kotlinx.android.synthetic.main.fragment_followers.*
 import kotlinx.android.synthetic.main.fragment_following.*
 import org.json.JSONArray
 import org.json.JSONObject
 import java.lang.Exception
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [FollowingFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class FollowingFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
     private var listData:ArrayList<DataFollowing> = ArrayList()
     private lateinit var adapter: ListFollowingAdapter
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,17 +37,8 @@ class FollowingFragment : Fragment() {
         getDataFollowing(username)
     }
     companion object {
-
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            FollowingFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-        fun newInstances(username: String?):FollowersFragment{
-            val fragment = FollowersFragment()
+        fun newInstances(username: String?):FollowingFragment{
+            val fragment = FollowingFragment()
             val bundle = Bundle()
             bundle.putString(ARG_USERNAME, username)
             fragment.arguments = bundle
@@ -131,12 +99,9 @@ class FollowingFragment : Fragment() {
             override fun onSuccess(statusCode: Int, headers: Array<out Header>, responseBody: ByteArray
             ) {
                 progressBar_following.visibility = View.INVISIBLE
-                //val listUser = ArrayList<Person>()
                 val result = String(responseBody)
-                //Log.d(FollowersFragment.TAG,"result-detail: $result")
                 try {
                     val responseObject = JSONObject(result)
-                    //Log.d(FollowersFragment.TAG,"items-detail: $result")
                     val username = responseObject.getString("login")
                     val name = responseObject.getString("name")
                     val avatar = responseObject.getString("avatar_url")

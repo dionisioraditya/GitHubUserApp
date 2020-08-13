@@ -1,7 +1,6 @@
 package com.example.githubuserapp
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,9 +12,6 @@ import com.bumptech.glide.request.RequestOptions
 
 class ListUserFollowersAdapter:RecyclerView.Adapter<ListUserFollowersAdapter.ListViewHolder>() {
     private val mData = ArrayList<DataFollowers>()
-    companion object{
-        private val TAG = ListUserFollowersAdapter::class.java.simpleName
-    }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ListViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
@@ -36,8 +32,10 @@ class ListUserFollowersAdapter:RecyclerView.Adapter<ListUserFollowersAdapter.Lis
             .into(holder.imgPhoto)
         holder.tvUsername.text = followersData.username
         holder.tvName.text = followersData.name
-        holder.tvFollowers.text = "Followers: ${followersData.followers}"
-        holder.tvFollowing.text = "Following: ${followersData.following}"
+        val lFollowers = holder.itemView.context.resources.getString(R.string.followers)
+        val lFollowing = holder.itemView.context.resources.getString(R.string.following)
+        holder.tvFollowers.text = "$lFollowers: ${followersData.followers}"
+        holder.tvFollowing.text = "$lFollowing: ${followersData.following}"
     }
     inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imgPhoto:ImageView = itemView.findViewById(R.id.img_photo)

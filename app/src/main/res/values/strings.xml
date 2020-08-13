@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Github User App</string>
     <string name="username">username</string>
     <string name="name_list">name</string>
@@ -9,12 +9,17 @@
     <string name="search">Search</string>
     <string name="search_hint">Search User</string>
     <string name="name">Name</string>
-    <string name="followers">followers</string>
-    <string name="following">following</string>
-    <string name="nav_followers">Followers</string>
-    <string name="nav_following">Following</string>
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
+    <string name="nav_followers">Followers:</string>
+    <string name="nav_following">Following:</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tab_followers">Followers</string>
     <string name="tab_following">Following</string>
+    <string name="change_language_settings" tools:ignore="MissingTranslation">Change Language Settings</string>
+    
+    <string name="location" tools:ignore="MissingTranslation">Location</string>
+    <string name="company" tools:ignore="MissingTranslation">Company</string>
+    <string name="repository" tools:ignore="MissingTranslation">Repository</string>
 </resources>

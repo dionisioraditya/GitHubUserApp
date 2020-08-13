@@ -12,12 +12,11 @@ class SectionsPagerAdapter(
     var username: String? = null
     private val tabTitles = intArrayOf(R.string.tab_followers,R.string.tab_following)
     override fun getItem(position: Int): Fragment {
-        var fragment: Fragment? = null
         when (position){
-            0 -> fragment = FollowersFragment.newInstances(username)
-            1 -> fragment = FollowingFragment.newInstances(username)
+            0 -> return FollowersFragment.newInstances(username)
+            1 -> return FollowingFragment.newInstances(username)
         }
-        return fragment as Fragment
+        return Fragment()
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
