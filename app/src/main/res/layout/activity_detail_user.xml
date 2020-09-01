@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DetailUser">
+    tools:context=".viewModel.DetailUserActivity">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,12 +45,15 @@
             android:text="@string/user_detail"
             android:textAlignment="center"
             android:textSize="20sp" />
-        <ProgressBar
-            android:id="@+id/progressBar_detail"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_favorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            style="?android:attr/progressBarStyle"/>
+            android:layout_gravity="bottom|right"
+            android:layout_marginRight="16dp"
+            android:backgroundTint="@color/colorPrimaryPurple"
+            app:fabSize="normal"
+            tools:ignore="RtlHardcoded" />
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
@@ -57,11 +61,9 @@
             android:layout_marginTop="10dp"
             android:background="@color/colorPrimary"
             app:tabTextColor="@android:color/white"/>
-
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
             android:layout_height="300dp" />
     </LinearLayout>
-
 </ScrollView>

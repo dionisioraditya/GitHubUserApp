@@ -1,10 +1,10 @@
-package com.example.githubuserapp
+package com.example.githubuserapp.model
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Person(
+data class DataUser(
     var username: String?= "",
     var avatar: String?="",
     var name: String?="",

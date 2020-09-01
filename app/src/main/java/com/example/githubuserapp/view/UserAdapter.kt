@@ -1,4 +1,4 @@
-package com.example.githubuserapp
+package com.example.githubuserapp.view
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -11,11 +11,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.githubuserapp.model.DataUser
+import com.example.githubuserapp.R
+import com.example.githubuserapp.viewModel.DetailUserActivity
 
 
 class ListUserAdapter : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>(){
     private  var onItemClickCallback: OnItemClickCallback? = null
-    private val mData = ArrayList<Person>()
+    private val mData = ArrayList<DataUser>()
 
     companion object{
         private val TAG = ListUserAdapter::class.java.simpleName
@@ -32,7 +35,7 @@ class ListUserAdapter : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>(){
         return mData.size
     }
     @SuppressLint("SetTextI18n")
-    override fun onBindViewHolder(holder:ListViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         val user = mData[position]
         Log.d(TAG, "test ${user.avatar}")
         Glide.with(holder.itemView.context)
@@ -49,7 +52,7 @@ class ListUserAdapter : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>(){
         // list on click
         holder.itemView.setOnClickListener {
             onItemClickCallback?.onItemClicked(mData[holder.adapterPosition])
-            val dataUser = Person(
+            val dataUser = DataUser(
                 user.username,
                 user.avatar,
                 user.name,
@@ -59,8 +62,9 @@ class ListUserAdapter : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>(){
                 user.location,
                 user.company
             )
-            val intent = Intent(holder.itemView.context,DetailUser::class.java)
-            intent.putExtra(DetailUser.EXTRA_PERSON,dataUser)
+            val intent = Intent(holder.itemView.context,
+                DetailUserActivity::class.java)
+            intent.putExtra(DetailUserActivity.EXTRA_PERSON,dataUser)
             holder.itemView.context.startActivity(intent)
         }
     }
@@ -72,9 +76,9 @@ class ListUserAdapter : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>(){
         val tvFollowing: TextView = itemView.findViewById(R.id.tv_following)
     }
     interface OnItemClickCallback{
-        fun onItemClicked(data: Person)
+        fun onItemClicked(data: DataUser)
     }
-    fun setData(items: ArrayList<Person>){
+    fun setData(items: ArrayList<DataUser>){
         mData.clear()
         mData.addAll(items)
         notifyDataSetChanged()

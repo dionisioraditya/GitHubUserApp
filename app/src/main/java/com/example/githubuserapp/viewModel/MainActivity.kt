@@ -1,4 +1,4 @@
-package com.example.githubuserapp
+package com.example.githubuserapp.viewModel
 
 import android.app.SearchManager
 import android.content.Context
@@ -14,6 +14,9 @@ import androidx.appcompat.widget.SearchView
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.githubuserapp.view.ListUserAdapter
+import com.example.githubuserapp.model.DataUser
+import com.example.githubuserapp.R
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler
 import cz.msebera.android.httpclient.Header
@@ -24,7 +27,7 @@ import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
     private lateinit var adapter: ListUserAdapter
-    private var listData: ArrayList<Person> = ArrayList()
+    private var listData: ArrayList<DataUser> = ArrayList()
     companion object {
         private val TAG = MainActivity::class.java.simpleName
     }
@@ -139,7 +142,16 @@ class MainActivity : AppCompatActivity() {
                     val repository = responseObject.getInt("public_repos")
                     val location = responseObject.getString("location")
                     val company = responseObject.getString("company")
-                    val user = Person(username, avatar, name, followers, following, repository, location, company)
+                    val user = DataUser(
+                        username,
+                        avatar,
+                        name,
+                        followers,
+                        following,
+                        repository,
+                        location,
+                        company
+                    )
                     listData.add(user)
                     adapter.setData(listData)
                 }catch (e:Exception){
@@ -168,8 +180,9 @@ class MainActivity : AppCompatActivity() {
         rv_list.layoutManager = LinearLayoutManager(this)
         adapter = ListUserAdapter()
         rv_list.adapter = adapter
-        adapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback{
-            override fun onItemClicked(data: Person) {
+        adapter.setOnItemClickCallback(object :
+            ListUserAdapter.OnItemClickCallback {
+            override fun onItemClicked(data: DataUser) {
                 messageItemClicked(data)
                 showSelectedData(data)
             }
@@ -180,7 +193,7 @@ class MainActivity : AppCompatActivity() {
         rv_list.setHasFixedSize(true)
         rv_list.addItemDecoration(DividerItemDecoration(rv_list.context, DividerItemDecoration.VERTICAL))
     }
-    private fun messageItemClicked(user:Person){
+    private fun messageItemClicked(user: DataUser){
         Toast.makeText(this, "you Choose" + user.username, Toast.LENGTH_SHORT).show()
     }
 
@@ -219,8 +232,8 @@ class MainActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-    private fun showSelectedData(dataUsers : Person){
-        val dataUser = Person(
+    private fun showSelectedData(dataUsers : DataUser){
+        val dataUser = DataUser(
             dataUsers.username,
             dataUsers.avatar,
             dataUsers.name,
@@ -230,9 +243,9 @@ class MainActivity : AppCompatActivity() {
             dataUsers.location,
             dataUsers.company
         )
-        val intentToDetail = Intent(this@MainActivity, DetailUser::class.java)
+        val intentToDetail = Intent(this@MainActivity, DetailUserActivity::class.java)
         Log.d(TAG, "dataUser Intent $dataUser")
-        intentToDetail.putExtra(DetailUser.EXTRA_PERSON, dataUser)
+        intentToDetail.putExtra(DetailUserActivity.EXTRA_PERSON, dataUser)
         startActivity(intentToDetail)
     }
 }

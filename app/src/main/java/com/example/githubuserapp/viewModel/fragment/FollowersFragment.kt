@@ -1,6 +1,7 @@
-package com.example.githubuserapp
+package com.example.githubuserapp.viewModel.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,37 +9,43 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.githubuserapp.model.DataFollowers
+import com.example.githubuserapp.view.ListFollowersAdapter
+import com.example.githubuserapp.R
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler
 import cz.msebera.android.httpclient.Header
-import kotlinx.android.synthetic.main.fragment_following.*
+import kotlinx.android.synthetic.main.fragment_followers.*
 import org.json.JSONArray
 import org.json.JSONObject
 import java.lang.Exception
 
-
-class FollowingFragment : Fragment() {
-    private var listData:ArrayList<DataFollowing> = ArrayList()
-    private lateinit var adapter: ListFollowingAdapter
+class FollowersFragment : Fragment() {
+    private lateinit var adapter: ListFollowersAdapter
+    private var listData: ArrayList<DataFollowers> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_following, container, false)
+        return inflater.inflate(R.layout.fragment_followers, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val username = arguments?.getString(ARG_USERNAME)
+        Log.d(TAG, "username-Followers $username")
         recyclerViewConfig()
         showRecyclerList()
-        getDataFollowing(username)
+        getDataFollowers(username)
     }
+
     companion object {
-        fun newInstances(username: String?):FollowingFragment{
-            val fragment = FollowingFragment()
+        private val TAG = FollowersFragment::class.java.simpleName
+        fun newInstances(username: String?): FollowersFragment {
+            val fragment =
+                FollowersFragment()
             val bundle = Bundle()
             bundle.putString(ARG_USERNAME, username)
             fragment.arguments = bundle
@@ -46,19 +53,19 @@ class FollowingFragment : Fragment() {
         }
         private const val ARG_USERNAME = "username"
     }
-    private fun getDataFollowing(id: String?){
-        progressBar_following.visibility = View.INVISIBLE
+    private fun getDataFollowers(id: String?){
+        progressBar_followers.visibility = View.INVISIBLE
         val client = AsyncHttpClient()
         client.addHeader("Authorization", "token d685ca4e8ebb09f9f58b35898326ad4cab3d8991")
         client.addHeader("User-Agent", "request")
-        val url = "https://api.github.com/users/$id/following"
-        client.get(url, object : AsyncHttpResponseHandler(){
+        val url = "https://api.github.com/users/$id/followers"
+        client.get(url, object :AsyncHttpResponseHandler(){
             override fun onSuccess(
                 statusCode: Int,
                 headers: Array<out Header>?,
                 responseBody: ByteArray
             ) {
-                progressBar_following.visibility = View.INVISIBLE
+                progressBar_followers.visibility = View.INVISIBLE
                 val result = String(responseBody)
                 try {
                     val jsonArray = JSONArray(result)
@@ -67,8 +74,8 @@ class FollowingFragment : Fragment() {
                         val username = responseObject.getString("login")
                         getDetailUser(username)
                     }
-                }catch (e: Exception){
-                    Toast.makeText(activity, e.message, Toast.LENGTH_LONG).show()
+                }catch (e:Exception){
+                    Toast.makeText(activity, e.message,Toast.LENGTH_LONG).show()
                     e.printStackTrace()
                 }
             }
@@ -78,7 +85,7 @@ class FollowingFragment : Fragment() {
                 responseBody: ByteArray?,
                 error: Throwable?
             ) {
-                progressBar_following.visibility = View.INVISIBLE
+                progressBar_followers.visibility = View.INVISIBLE
                 val errorMessage = when (statusCode) {
                     401 -> "$statusCode : Bad Request"
                     403 -> "$statusCode : Forbidden"
@@ -90,7 +97,7 @@ class FollowingFragment : Fragment() {
         })
     }
     private fun getDetailUser(id: String){
-        progressBar_following.visibility = View.VISIBLE
+        progressBar_followers.visibility = View.VISIBLE
         val client = AsyncHttpClient()
         client.addHeader("Authorization", "token d685ca4e8ebb09f9f58b35898326ad4cab3d8991")
         client.addHeader("User-Agent", "request")
@@ -98,10 +105,12 @@ class FollowingFragment : Fragment() {
         client.get(url, object :AsyncHttpResponseHandler(){
             override fun onSuccess(statusCode: Int, headers: Array<out Header>, responseBody: ByteArray
             ) {
-                progressBar_following.visibility = View.INVISIBLE
+                progressBar_followers.visibility = View.INVISIBLE
                 val result = String(responseBody)
+                Log.d(TAG,"result-detail: $result")
                 try {
                     val responseObject = JSONObject(result)
+                    Log.d(TAG,"items-detail: $result")
                     val username = responseObject.getString("login")
                     val name = responseObject.getString("name")
                     val avatar = responseObject.getString("avatar_url")
@@ -110,9 +119,18 @@ class FollowingFragment : Fragment() {
                     val repository = responseObject.getInt("public_repos")
                     val location = responseObject.getString("location")
                     val company = responseObject.getString("location")
-                    val user = DataFollowing(username, avatar, name, followers, following, repository, location, company)
+                    val user = DataFollowers(
+                        username,
+                        avatar,
+                        name,
+                        followers,
+                        following,
+                        repository,
+                        location,
+                        company
+                    )
                     listData.add(user)
-                    adapter.setDataFollowing(listData)
+                    adapter.setDataFollower(listData)
                 }catch (e: Exception){
                     Toast.makeText(activity, e.message, Toast.LENGTH_LONG).show()
                     e.printStackTrace()
@@ -124,7 +142,7 @@ class FollowingFragment : Fragment() {
                 responseBody: ByteArray?,
                 error: Throwable?
             ) {
-                progressBar_following.visibility = View.INVISIBLE
+                progressBar_followers.visibility = View.INVISIBLE
                 val errorMessage = when (statusCode){
                     401 -> "$statusCode : Bad Request"
                     403 -> "$statusCode : Forbidden"
@@ -136,13 +154,14 @@ class FollowingFragment : Fragment() {
         })
     }
     private fun showRecyclerList(){
-        rv_list_following.layoutManager = LinearLayoutManager(activity)
-        adapter = ListFollowingAdapter()
-        rv_list_following.adapter = adapter
+        rv_list_followers.layoutManager = LinearLayoutManager(activity)
+        adapter = ListFollowersAdapter()
+        rv_list_followers.adapter = adapter
     }
+
     private fun recyclerViewConfig(){
-        rv_list_following.layoutManager = LinearLayoutManager(rv_list_following.context)
-        rv_list_following.setHasFixedSize(true)
-        rv_list_following.addItemDecoration(DividerItemDecoration(rv_list_following.context, DividerItemDecoration.VERTICAL))
+        rv_list_followers.layoutManager = LinearLayoutManager(rv_list_followers.context)
+        rv_list_followers.setHasFixedSize(true)
+        rv_list_followers.addItemDecoration(DividerItemDecoration(rv_list_followers.context, DividerItemDecoration.VERTICAL))
     }
 }
