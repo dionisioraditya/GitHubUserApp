@@ -16,7 +16,8 @@ internal class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATAB
                 "${DatabaseContract.UserColumns.COLUMN_NAME_COMPANY} TEXT NOT NULL,"+
                 "${DatabaseContract.UserColumns.COLUMN_NAME_LOCATION}TEXT NOT NULL,"+
                 "${DatabaseContract.UserColumns.COLUMN_NAME_FOLLOWERS} TEXT NOT NULL,"+
-                "${DatabaseContract.UserColumns.COLUMN_NAME_FOLLOWING} TEXT NOT NULL)"
+                "${DatabaseContract.UserColumns.COLUMN_NAME_FOLLOWING} TEXT NOT NULL,"+
+                "${DatabaseContract.UserColumns.COLUMN_NAME_REPOSITORY}TEXT NOT NULL)"
     }
 
     override fun onCreate(db: SQLiteDatabase) {
