@@ -29,7 +29,7 @@ import kotlinx.android.synthetic.main.activity_detail_user.*
 
 class DetailUserActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var userHelper: UserHelper
-    private var isFavorite = false
+    private var statusFavorite = false
     private var favorites:DataFavorit? = null
     companion object {
         const val EXTRA_PERSON = "extra_person"
@@ -102,14 +102,14 @@ class DetailUserActivity : AppCompatActivity(), View.OnClickListener {
     }
     @SuppressLint("ShowToast")
     override fun onClick(v: View) {
-        val checked: Int = R.drawable.ic_baseline_favorite_red_24
-        val unChecked: Int = R.drawable.ic_baseline_favorite_white_24
+        val isFavorite: Int = R.drawable.ic_baseline_favorite_red_24
+        val unFavorite: Int = R.drawable.ic_baseline_favorite_white_24
         if (v.id == R.id.fab_favorite){
-            if (isFavorite){
+            if (statusFavorite){
                 userHelper.deleteById(favorites?.username.toString())
                 Toast.makeText(this, "Removed from Favorite list", Toast.LENGTH_SHORT)
-                fab_favorite.setImageResource(unChecked)
-                isFavorite = false
+                fab_favorite.setImageResource(unFavorite)
+                statusFavorite = false
 
             }else{
                 val values = ContentValues()
@@ -131,12 +131,12 @@ class DetailUserActivity : AppCompatActivity(), View.OnClickListener {
                 values.put(COLUMN_NAME_FOLLOWERS, txtFollowers)
                 values.put(COLUMN_NAME_FOLLOWING, txtFollowing)
                 values.put(COLUMN_NAME_REPOSITORY, txtRepository)
-                isFavorite = true
+                statusFavorite = true
                 Log.d(TAG, "Check Database: $values")
                 // insert to database
                 userHelper.insert(values)
                 Toast.makeText(this, "$txtUsername add to favorite", Toast.LENGTH_SHORT).show()
-                fab_favorite.setImageResource(checked)
+                fab_favorite.setImageResource(isFavorite)
             }
         }
     }

@@ -10,7 +10,7 @@ internal class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATAB
         private const val DATABASE_NAME = "githubuserapp"
         private const val DATABASE_VERSION = 1
         private const val SQL_CREATE_TABLE_NOTE = "CREATE TABLE $TABLE_NAME" +
-                "(${DatabaseContract.UserColumns.COLUMN_NAME_USERNAME} TEXT PRIMARY KEY AUTOINCREMENT,"+
+                "(${DatabaseContract.UserColumns.COLUMN_NAME_USERNAME} TEXT PRIMARY KEY AUTOINCREMENT NOT NULL,"+
                 "${DatabaseContract.UserColumns.COLUMN_NAME_NAME} TEXT NOT NULL"+
                 "${DatabaseContract.UserColumns.COLUMN_NAME_AVATAR_URL} TEXT NOT NULL," +
                 "${DatabaseContract.UserColumns.COLUMN_NAME_COMPANY} TEXT NOT NULL,"+
